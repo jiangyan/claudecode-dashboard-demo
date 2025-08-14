@@ -1,6 +1,10 @@
 # Claude Code Dashboard
 
+I made a google slides of claude code hardcore tips, check here: https://docs.google.com/presentation/d/1aUWyy3jfk5-lL0Pdyu4E9d2R3YToerajttLKklj9xLI/edit?usp=sharing
+
 A real-time claude code agents running activities dashboard built with Next.js, featuring live agent monitoring, system status tracking, and WebSocket-powered updates.
+
+<img width="1705" height="931" alt="image" src="https://github.com/user-attachments/assets/6634ee4f-e975-4421-bf1b-37920817dc3e" />
 
 ![Dashboard](https://img.shields.io/badge/Next.js-15-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
@@ -349,5 +353,6 @@ MIT License
 See the LICENSE file for details.
 
 ---
+
 
 Built with ❤️ using Claude AI assistance
