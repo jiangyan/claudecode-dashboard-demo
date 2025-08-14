@@ -4,6 +4,10 @@ import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 
+interface EncryptedChatProps {
+  currentTime: Date | null
+}
+
 const chatMessages = [
   "> [AGT:gh0stfire] ::: INIT >> *** loading secure channel",
   "> CH#2 | 1231.90B2464.500 ...x83",
@@ -11,8 +15,12 @@ const chatMessages = [
   '> MSG >> "...mission override initiated... awaiting delta node clearance"',
 ]
 
-export function EncryptedChat() {
+export function EncryptedChat({ currentTime }: EncryptedChatProps) {
   const [radarSpeed, setRadarSpeed] = useState([4])
+  
+  const formatTime = (date: Date) => {
+    return date.toISOString().replace("T", " ").slice(0, 19) + " UTC"
+  }
 
   return (
     <Card className="bg-gray-900/50 border-gray-700 p-6">
@@ -34,7 +42,7 @@ export function EncryptedChat() {
         </div>
       </div>
 
-      <div className="text-center text-xs text-gray-400 mb-6"># 2025-06-17 14:23 UTC</div>
+      <div className="text-center text-xs text-gray-400 mb-6"># {currentTime ? formatTime(currentTime) : 'LOADING...'}</div>
 
       {/* Speed Control */}
       <div className="mb-6">

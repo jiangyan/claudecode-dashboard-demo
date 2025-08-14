@@ -80,7 +80,7 @@ export function ClaudeCodeDashboard() {
                 selectedAgentHistory={selectedAgentHistory}
               />
 
-              <EncryptedChat />
+              <EncryptedChat currentTime={currentTime} />
             </div>
           )}
 

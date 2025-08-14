@@ -15,28 +15,29 @@ This is a Next.js-based tactical dashboard application with real-time WebSocket 
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Run development server only
-npm run dev
-
-# Run full development (WebSocket server + Next.js)
-npm run dev:full
+pnpm dev
 
 # Initialize database with demo data
-npm run db:init
+pnpm db:init
 
 # Run WebSocket server standalone
-npm run ws:server
+pnpm ws:server
 
 # Build for production
-npm run build
+pnpm build
 
 # Run production build
-npm run start
+pnpm start
 
 # Run linting
-npm run lint
+pnpm lint
+
+# Quick start (recommended) - runs all services in tmux/terminal session
+./run.sh     # Linux/macOS/WSL
+run.bat      # Windows
 ```
 
 ## Architecture Overview
@@ -48,9 +49,11 @@ npm run lint
   - `layout.tsx`: Root layout with Inter and Fira Code fonts
 
 - **`components/`**: React components
-  - `claudecode-dashboard.tsx`: Main dashboard component managing WebSocket connection and agent state
+  - `claudecode-dashboard.tsx`: Main dashboard component managing WebSocket connection and agent state with synchronized time display
   - `dashboard/`: Modular dashboard panels
-    - `header.tsx`, `sidebar.tsx`: Navigation and layout
+    - `header.tsx`: Navigation, layout, and synchronized UTC time display (YYYY-MM-DD HH:MM:SS UTC)
+    - `encrypted-chat.tsx`: Chat activity with synchronized UTC time display matching header format
+    - `sidebar.tsx`: Navigation and layout
     - `agent-allocation.tsx`: Real-time agent status monitoring
     - `activity-log.tsx`: Agent activity history with filtering
     - `systems-panel.tsx`, `operations-panel.tsx`, `intelligence-panel.tsx`: Specialized monitoring panels
@@ -89,18 +92,31 @@ npm run lint
 - CORS headers configured with `Access-Control-Allow-Origin: *` for development
 - Data flow: SQLite → WebSocket Server → React Frontend
 - Agent deduplication: Shows only latest record per unique agent name
+- Synchronized UTC time display: Header and encrypted chat activity show identical current time with seconds precision
 
 ## Development Workflow
 
-1. Initialize database if needed: `npm run db:init`
-2. Start the WebSocket server and Next.js dev server together: `npm run dev:full`
-3. The WebSocket server monitors the SQLite database for changes
-4. Frontend connects to WebSocket and displays real-time agent updates
-5. System information is fetched via the `/api/system-info` endpoint
+### Quick Start (Recommended)
+```bash
+./run.sh    # Creates tmux session with all services
+```
+This sets up three panes:
+1. Next.js development server with network IPs display
+2. Database initialization
+3. WebSocket server for real-time updates
 
-For standalone development:
-- Frontend only: `npm run dev` (displays available network IPs)
-- WebSocket only: `npm run ws:server`
+### Manual Setup
+1. Initialize database if needed: `pnpm db:init`
+2. Start WebSocket server: `pnpm ws:server` (in one terminal)
+3. Start Next.js dev server: `pnpm dev` (in another terminal)
+4. The WebSocket server monitors the SQLite database for changes
+5. Frontend connects to WebSocket and displays real-time agent updates
+6. System information is fetched via the `/api/system-info` endpoint
+
+### Time Synchronization
+- Header and encrypted chat activity display synchronized UTC time
+- Time updates every second with format: YYYY-MM-DD HH:MM:SS UTC
+- Both components receive the same `currentTime` prop from the main dashboard
 
 ## Configuration Details
 

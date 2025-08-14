@@ -61,13 +61,13 @@ tactical-dashboard/
 │   └── globals.css               # Global styles
 │
 ├── components/                    # React components
-│   ├── claudecode-dashboard.tsx  # Main dashboard orchestrator
+│   ├── claudecode-dashboard.tsx  # Main dashboard orchestrator with time sync
 │   ├── dashboard/                # Dashboard modules
-│   │   ├── header.tsx           # Title, logo, connection status
+│   │   ├── header.tsx           # Title, logo, connection status, UTC time
 │   │   ├── sidebar.tsx          # Navigation & system stats
 │   │   ├── agent-allocation.tsx # Agent list & selection
 │   │   ├── activity-log.tsx     # Agent activity history
-│   │   ├── encrypted-chat.tsx   # Chat activity feed
+│   │   ├── encrypted-chat.tsx   # Chat activity feed with synchronized time
 │   │   ├── systems-panel.tsx    # Detailed system info
 │   │   ├── operations-panel.tsx # Operations view (TBD)
 │   │   └── intelligence-panel.tsx # Intelligence view (TBD)
@@ -237,13 +237,14 @@ All sessions update in real-time as Claude Code processes your requests!
 ### Command Center View
 - **Agent Allocation**: Live agent status with clickable history
 - **Activity Log**: Filtered activity based on selected agent
-- **Encrypted Chat**: Simulated secure communications feed
+- **Encrypted Chat**: Simulated secure communications feed with synchronized UTC time display
 
 ### System Monitoring
 - **Uptime Tracking**: Time since first agent record
 - **Active Agents**: Count of agents with "running" status
 - **Mission Counter**: Total database records
 - **Connection Status**: WebSocket connection indicator
+- **Synchronized Time Display**: Header and encrypted chat show identical current UTC time (YYYY-MM-DD HH:MM:SS UTC) that updates every second
 
 ### System Information Panel
 Displays detailed host information:
