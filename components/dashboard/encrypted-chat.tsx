@@ -1,6 +1,8 @@
 "use client"
 
+import { useState } from "react"
 import { Card } from "@/components/ui/card"
+import { Slider } from "@/components/ui/slider"
 
 const chatMessages = [
   "> [AGT:gh0stfire] ::: INIT >> *** loading secure channel",
@@ -10,6 +12,8 @@ const chatMessages = [
 ]
 
 export function EncryptedChat() {
+  const [radarSpeed, setRadarSpeed] = useState([4])
+
   return (
     <Card className="bg-gray-900/50 border-gray-700 p-6">
       <h2 className="text-green-400 font-bold mb-6 tracking-wider">ENCRYPTED CHAT ACTIVITY</h2>
@@ -25,12 +29,32 @@ export function EncryptedChat() {
           {/* Sweep line */}
           <div
             className="absolute top-1/2 left-1/2 w-16 h-px bg-green-400 origin-left transform -translate-y-px animate-spin"
-            style={{ animationDuration: "4s" }}
+            style={{ animationDuration: `${radarSpeed[0]}s` }}
           ></div>
         </div>
       </div>
 
       <div className="text-center text-xs text-gray-400 mb-6"># 2025-06-17 14:23 UTC</div>
+
+      {/* Speed Control */}
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs text-gray-400 font-mono">RADAR SPEED</span>
+          <span className="text-xs text-green-400 font-mono">{radarSpeed[0].toFixed(1)}s</span>
+        </div>
+        <Slider
+          value={radarSpeed}
+          onValueChange={setRadarSpeed}
+          min={0.5}
+          max={8}
+          step={0.1}
+          className="w-full"
+        />
+        <div className="flex justify-between text-xs text-gray-500 mt-1">
+          <span>Fast</span>
+          <span>Slow</span>
+        </div>
+      </div>
 
       <div className="space-y-2 text-xs font-mono">
         {chatMessages.map((message, index) => (
