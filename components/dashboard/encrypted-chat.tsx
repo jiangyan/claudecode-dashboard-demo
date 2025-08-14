@@ -22,6 +22,11 @@ export function EncryptedChat({ currentTime }: EncryptedChatProps) {
     return date.toISOString().replace("T", " ").slice(0, 19) + " UTC"
   }
 
+  // Invert the slider value so left (slow) = high duration, right (fast) = low duration
+  const getAnimationDuration = (sliderValue: number) => {
+    return 8.5 - sliderValue
+  }
+
   return (
     <Card className="bg-gray-900/50 border-gray-700 p-6">
       <h2 className="text-green-400 font-bold mb-6 tracking-wider">ENCRYPTED CHAT ACTIVITY</h2>
@@ -37,7 +42,7 @@ export function EncryptedChat({ currentTime }: EncryptedChatProps) {
           {/* Sweep line */}
           <div
             className="absolute top-1/2 left-1/2 w-16 h-px bg-green-400 origin-left transform -translate-y-px animate-spin"
-            style={{ animationDuration: `${radarSpeed[0]}s` }}
+            style={{ animationDuration: `${getAnimationDuration(radarSpeed[0])}s` }}
           ></div>
         </div>
       </div>
@@ -48,7 +53,7 @@ export function EncryptedChat({ currentTime }: EncryptedChatProps) {
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs text-gray-400 font-mono">RADAR SPEED</span>
-          <span className="text-xs text-green-400 font-mono">{radarSpeed[0].toFixed(1)}s</span>
+          <span className="text-xs text-green-400 font-mono">{getAnimationDuration(radarSpeed[0]).toFixed(1)}s</span>
         </div>
         <Slider
           value={radarSpeed}
@@ -56,11 +61,11 @@ export function EncryptedChat({ currentTime }: EncryptedChatProps) {
           min={0.5}
           max={8}
           step={0.1}
-          className="w-full"
+          className="w-full [&_[data-slot=slider-range]]:bg-green-400"
         />
         <div className="flex justify-between text-xs text-gray-500 mt-1">
-          <span>Fast</span>
           <span>Slow</span>
+          <span>Fast</span>
         </div>
       </div>
 
