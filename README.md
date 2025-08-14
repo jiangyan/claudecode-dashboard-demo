@@ -1,6 +1,6 @@
 # Claude Code Dashboard
 
-A real-time tactical operations dashboard built with Next.js, featuring live agent monitoring, system status tracking, and WebSocket-powered updates.
+A real-time claude code agents running activities dashboard built with Next.js, featuring live agent monitoring, system status tracking, and WebSocket-powered updates.
 
 ![Dashboard](https://img.shields.io/badge/Next.js-15-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
@@ -139,6 +139,98 @@ END;
 2. **Polling**: WebSocket server polls database every 500ms via `sqlite3` CLI
 3. **Broadcasting**: Changes are broadcast to all connected clients
 4. **UI Updates**: Dashboard receives updates and re-renders in real-time
+
+## 🤖 Claude Code Integration
+
+### Multi-Agent Monitoring via Claude Code Hooks
+
+The dashboard seamlessly integrates with Claude Code to monitor multiple AI coding sessions in real-time. Each Claude Code instance becomes a live "agent" on your dashboard!
+
+```
+┌──────────────────┐          ┌──────────────────┐          ┌──────────────────┐
+│  Claude Code #1  │          │  Claude Code #2  │          │  Claude Code #3  │
+│    (Session A)   │          │    (Session B)   │          │    (Session C)   │
+└────────┬─────────┘          └────────┬─────────┘          └────────┬─────────┘
+         │                             │                             │
+         │ Hook Events                 │ Hook Events                 │ Hook Events
+         │ (SessionStart,              │ (UserPromptSubmit,         │ (Stop)
+         │  UserPromptSubmit)          │  Stop)                     │
+         │                             │                             │
+         └──────────────┬──────────────┴──────────────┬──────────────┘
+                        │                              │
+                        ▼                              ▼
+              ┌─────────────────────────────────────────────────┐
+              │             claude_hooks.py                     │
+              │                                                 │
+              │  • Intercepts Claude Code session events        │
+              │  • Extracts session names from transcripts      │
+              │  • Converts events to agent activities          │
+              └─────────────────────┬───────────────────────────┘
+                                    │
+                                    │ INSERT INTO agents
+                                    ▼
+                           ┌──────────────────┐
+                           │    agents.db     │
+                           │                  │
+                           │  name | job |    │
+                           │  status | time   │
+                           └────────┬─────────┘
+                                    │
+                                    │ Polled every 500ms
+                                    ▼
+                           ┌──────────────────┐
+                           │ WebSocket Server │────────► Real-time Dashboard
+                           │   (Port 8080)    │          Shows all active
+                           └──────────────────┘          Claude Code agents
+```
+
+### How It Works
+
+1. **Claude Code Hook Events**: Each Claude Code session emits lifecycle events:
+   - `SessionStart`: New coding session begins
+   - `UserPromptSubmit`: User sends a prompt to Claude
+   - `Stop`: Response generation completes
+
+2. **Hook Handler (`claude_hooks.py`)**: 
+   - Captures these events via stdin
+   - Extracts meaningful session names from transcript files
+   - Updates the SQLite database with agent status
+
+3. **Agent States**:
+   - **started**: Session initialized
+   - **running**: Processing user prompt
+   - **completed**: Response delivered
+
+4. **Real-time Updates**: WebSocket server polls the database and broadcasts changes to all connected dashboards
+
+### Setting Up Claude Code Hooks
+
+To enable Claude Code monitoring, configure your Claude Code to use the hook handler:
+
+```bash
+# Set the hook handler in your Claude Code configuration
+export CLAUDE_CODE_HOOKS_PATH=/path/to/claude_hooks.py
+
+# Or configure it in your Claude Code settings
+```
+
+When configured, every Claude Code session will automatically appear as a live agent in your dashboard, showing:
+- Session name (extracted from transcript)
+- Current task being processed
+- Real-time status updates
+- Timestamp of last activity
+
+### Example Agent Activity
+
+When you run multiple Claude Code sessions simultaneously:
+
+| Agent Name | Job | Status | Time |
+|------------|-----|--------|------|
+| session_abc123 | Implementing authentication system | running | 12:34:56 |
+| session_def456 | Refactoring database queries | completed | 12:33:45 |
+| session_ghi789 | Writing unit tests for API | started | 12:35:12 |
+
+All sessions update in real-time as Claude Code processes your requests!
 
 ## 🎨 Features
 
