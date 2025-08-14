@@ -50,10 +50,10 @@ def update_agent_db(name, job, status):
             )
         ''')
         
-        # Insert new record
+        # Insert new record (time in milliseconds for JavaScript Date compatibility)
         cursor.execute(
             "INSERT INTO agents (name, job, status, time) VALUES (?, ?, ?, ?)",
-            (name, job, status, int(time.time()))
+            (name, job, status, int(time.time() * 1000))
         )
         
         conn.commit()
