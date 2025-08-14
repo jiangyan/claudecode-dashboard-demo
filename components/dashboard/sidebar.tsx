@@ -1,6 +1,6 @@
 "use client"
 
-import { Users, Settings, Brain, Monitor, MessageSquare } from "lucide-react"
+import { Users, Settings, BarChart3, Monitor, MessageSquare } from "lucide-react"
 import { ActiveSection } from "@/lib/types"
 
 interface SidebarProps {
@@ -54,7 +54,7 @@ export function Sidebar({
             className="flex items-center gap-3 px-4 py-2 text-gray-400 hover:text-green-400 cursor-pointer"
             onClick={() => setActiveSection("INTELLIGENCE")}
           >
-            <Brain className="w-4 h-4" />
+            <BarChart3 className="w-4 h-4" />
             INTELLIGENCE
           </div>
           <div
